@@ -7,7 +7,7 @@ namespace tamagotori.lib.CameraUsherTool
     public class CameraUsherToolSetup
     {
         const string ProjectSettingsName = "ProjectSettings";
-        public static ProjectSettingsData GetOrCreateProjectSettings(EditorWindow window)
+        public static ProjectSettingsData GetOrCreateProjectSettings(ToolWindow window)
         {
             var projectSettingPath = $"{CameraUsherToolUtil.GetToolRootPath(window)}/Setting/{ProjectSettingsName}.asset";
 

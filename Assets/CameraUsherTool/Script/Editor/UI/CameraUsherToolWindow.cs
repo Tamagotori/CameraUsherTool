@@ -7,20 +7,15 @@ using System.Collections.Generic;
 
 namespace tamagotori.lib.CameraUsherTool
 {
-    public class CameraUsherToolWindow : OdinEditorWindow
+    public class CameraUsherToolWindow : ToolWindow
     {
 
-        [MenuItem("Tools/CameraUsherTool")]
+        [MenuItem("Tools/CameraUsherTool/カメラプリセット")]
         private static void OpenWindow()
         {
             var window = GetWindow<CameraUsherToolWindow>();
-            window.titleContent = new GUIContent("CameraUsherTool");
+            window.titleContent = new GUIContent("カメラプリセット(CUTツール)");
             window.Show();
-        }
-
-        private void Update()
-        {
-            CameraUsherTool.SetupProjectSettings(this);
         }
 
         [SerializeField]
@@ -28,7 +23,12 @@ namespace tamagotori.lib.CameraUsherTool
         [LabelText("プロジェクト設定")]
         public ProjectSettingsData projectSettingsData;
 
-        [TitleGroup("ターゲット", order: 20)]
+        [TitleGroup("プリセット", order: 20)]
+        [LabelText("")]
+        [InlineProperty]
+        public UIParts.SearchPresetData searchPresetData;
+
+        [TitleGroup("ターゲット", order: 30)]
         [LabelText("ターゲット名")]
         [DisableIf(nameof(IsForceTargetObj))]
         [ValueDropdown(nameof(GetTargetObjList))]
@@ -56,6 +56,12 @@ namespace tamagotori.lib.CameraUsherTool
         bool IsForceTargetObj()
         {
             return forceTargetObj != null;
+        }
+
+        private void Update()
+        {
+            CameraUsherTool.SetupProjectSettings(this);
+            searchPresetData.currentWindow = this;
         }
     }
 
