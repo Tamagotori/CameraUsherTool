@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7336b03314ba7634f8b7891ccfe44235, type: 3}
   m_Name: CameraPresetData
   m_EditorClassIdentifier: 
-  groupName: 
+  description: 
+  groupName: "\u4E00\u4EBA"
   presetName: 
+  expectedPartName: 

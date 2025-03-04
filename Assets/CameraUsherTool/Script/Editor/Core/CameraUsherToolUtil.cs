@@ -7,11 +7,14 @@ namespace tamagotori.lib.CameraUsherTool
 {
     public class CameraUsherToolUtil
     {
-        public static string GetToolRootPath(ToolWindow window)
+        public static ScriptableObject searchPathPivot;
+        public const string toolName = "CameraUsherTool";
+
+        public static string GetToolRootPath()
         {
-            var windowPath = AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(window));
-            var dirInfo = new DirectoryInfo(windowPath);
-            while (dirInfo.Name != "CameraUsherTool")
+            var pivotPath = AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(searchPathPivot));
+            var dirInfo = new DirectoryInfo(pivotPath);
+            while (dirInfo.Name != toolName)
             {
                 if (dirInfo.Parent == null) return null;
                 dirInfo = dirInfo.Parent;
@@ -22,10 +25,10 @@ namespace tamagotori.lib.CameraUsherTool
             return $"Assets/{path}";
         }
 
-        public static List<string> GetPresetPathList(ToolWindow window)
+        public static List<string> GetPresetPathList()
         {
             var pathList = new List<string>();
-            var dirPath = $"{GetToolRootPath(window)}/CameraPreset";
+            var dirPath = $"{GetToolRootPath()}/CameraPreset";
             var dirInfo = new DirectoryInfo(dirPath);
             var files = dirInfo.GetFiles("*.asset", SearchOption.AllDirectories);
             foreach (var file in files)
@@ -38,9 +41,9 @@ namespace tamagotori.lib.CameraUsherTool
             return pathList;
         }
 
-        public static List<CameraPresetData> GetPresetDataList(ToolWindow window)
+        public static List<CameraPresetData> GetPresetDataList()
         {
-            var pathList = GetPresetPathList(window);
+            var pathList = GetPresetPathList();
             var dataList = new List<CameraPresetData>();
             foreach (var path in pathList)
             {
@@ -48,6 +51,24 @@ namespace tamagotori.lib.CameraUsherTool
                 dataList.Add(data);
             }
             return dataList;
+        }
+
+        public static ProjectSettingsData GetProjectSettingsData()
+        {
+            var path = $"{GetToolRootPath()}/Setting/{CameraUsherToolSetup.ProjectSettingsName}.asset";
+            return AssetDatabase.LoadAssetAtPath<ProjectSettingsData>(path);
+        }
+
+        public static List<string> GetGroupNameList(bool withAll)
+        {
+            var list = new List<string>() { };
+            if (withAll) list.Add("All");
+            var projectSettings = GetProjectSettingsData();
+            foreach (var name in projectSettings.groupNameList)
+            {
+                list.Add(name);
+            }
+            return list;
         }
     }
 }

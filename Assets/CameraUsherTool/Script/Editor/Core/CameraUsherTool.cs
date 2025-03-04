@@ -7,7 +7,7 @@ namespace tamagotori.lib.CameraUsherTool
         public static void SetupProjectSettings(CameraUsherToolWindow window)
         {
             if (window.projectSettingsData != null) return;
-            window.projectSettingsData = CameraUsherToolSetup.GetOrCreateProjectSettings(window);
+            window.projectSettingsData = CameraUsherToolSetup.GetOrCreateProjectSettings();
         }
     }
 

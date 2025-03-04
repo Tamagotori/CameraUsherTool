@@ -19,7 +19,7 @@ namespace tamagotori.lib.CameraUsherTool
         [Button("プリセットデータ作成")]
         void CreatePresetData()
         {
-            var presetData = CameraUsherTool.CreatePresetData(this);
+            var presetData = CameraUsherTool.CreatePresetData();
             searchPresetData.currentPresetData = presetData;
         }
 
@@ -28,9 +28,13 @@ namespace tamagotori.lib.CameraUsherTool
         [InlineProperty]
         public UIParts.SearchPresetData searchPresetData;
 
+        void Awake()
+        {
+            CameraUsherToolUtil.searchPathPivot = this;
+        }
         void Update()
         {
-            searchPresetData.currentWindow = this;
+            CameraUsherToolUtil.searchPathPivot = this;
         }
     }
 }

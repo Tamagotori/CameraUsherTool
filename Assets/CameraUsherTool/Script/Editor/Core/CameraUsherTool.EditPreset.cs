@@ -5,9 +5,9 @@ namespace tamagotori.lib.CameraUsherTool
 {
     public partial class CameraUsherTool
     {
-        public static CameraPresetData CreatePresetData(ToolWindow window)
+        public static CameraPresetData CreatePresetData()
         {
-            var rootPath = CameraUsherToolUtil.GetToolRootPath(window);
+            var rootPath = CameraUsherToolUtil.GetToolRootPath();
             var assetPath = $"{rootPath}/CameraPreset/CameraPresetData.asset";
             assetPath = AssetDatabase.GenerateUniqueAssetPath(assetPath);
 

@@ -58,10 +58,16 @@ namespace tamagotori.lib.CameraUsherTool
             return forceTargetObj != null;
         }
 
+        void Awake()
+        {
+            CameraUsherToolUtil.searchPathPivot = this;
+            CameraUsherTool.SetupProjectSettings(this);
+        }
+
         private void Update()
         {
+            CameraUsherToolUtil.searchPathPivot = this;
             CameraUsherTool.SetupProjectSettings(this);
-            searchPresetData.currentWindow = this;
         }
     }
 

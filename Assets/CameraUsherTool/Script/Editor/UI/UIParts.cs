@@ -16,12 +16,13 @@ namespace tamagotori.lib.CameraUsherTool
         public class SearchPresetData
         {
             [LabelText("プリセットデータ")]
-            [HideInInspector]
-            public ToolWindow currentWindow;
             public CameraPresetData currentPresetData;
+            [BoxGroup("プリセット検索")]
             [ValueDropdown(nameof(GetGroupNameList))]
             public string searchGroupName;
+            [BoxGroup("プリセット検索")]
             public string searchPresetWord;
+            [BoxGroup("プリセット検索")]
             [Button("検索")]
             void Search()
             {
@@ -30,14 +31,7 @@ namespace tamagotori.lib.CameraUsherTool
 
             List<string> GetGroupNameList()
             {
-                var list = new List<string>() { "All" };
-                if (currentWindow == null) return list;
-                var presetDataList = CameraUsherToolUtil.GetPresetDataList(currentWindow);
-                foreach (var data in presetDataList)
-                {
-                    if (!list.Contains(data.groupName)) list.Add(data.groupName);
-                }
-                return list;
+                return CameraUsherToolUtil.GetGroupNameList(true);
             }
         }
     }
