@@ -20,7 +20,15 @@ namespace tamagotori.lib.CameraUsherTool
         void CreatePresetData()
         {
             var presetData = CameraUsherTool.CreatePresetData();
-            searchPresetData.currentPresetData = presetData;
+            Selection.activeObject = presetData;
+        }
+
+        [TitleGroup("プリセット作成", order: 10)]
+        [Button("階層データ作成")]
+        void CreatePresetHierarchyData()
+        {
+            var hierarchyData = CameraUsherTool.CreatePresetHierarchyData();
+            Selection.activeObject = hierarchyData;
         }
 
         [TitleGroup("プリセット編集", order: 20)]

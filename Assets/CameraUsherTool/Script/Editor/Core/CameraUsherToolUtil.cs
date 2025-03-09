@@ -9,6 +9,7 @@ namespace tamagotori.lib.CameraUsherTool
     {
         public static ScriptableObject searchPathPivot;
         public const string toolName = "CameraUsherTool";
+        const string allGroupName = "All";
 
         public static string GetToolRootPath()
         {
@@ -25,25 +26,37 @@ namespace tamagotori.lib.CameraUsherTool
             return $"Assets/{path}";
         }
 
-        public static List<string> GetPresetPathList()
+        public static List<string> GetPresetPathList(string searchGroupName, string searchCutName)
         {
             var pathList = new List<string>();
-            var dirPath = $"{GetToolRootPath()}/CameraPreset";
-            var dirInfo = new DirectoryInfo(dirPath);
-            var files = dirInfo.GetFiles("*.asset", SearchOption.AllDirectories);
-            foreach (var file in files)
+            if (string.IsNullOrEmpty(searchGroupName) || string.IsNullOrEmpty(searchCutName)) return pathList;
+            var groupNameList = GetGroupNameList(false);
+            foreach (var groupName in groupNameList)
             {
-                var path = file.FullName;
-                path = path.Replace("\\", "/");
-                path = path.Split("/Assets/")[1];
-                pathList.Add($"Assets/{path}");
+                if (groupName != searchGroupName && searchGroupName != allGroupName) continue;
+                var cutNameList = GetCutNameList(groupName, false);
+                foreach (var cutName in cutNameList)
+                {
+                    if (cutName != searchCutName && searchCutName != allGroupName) continue;
+                    var dirPath = $"{GetToolRootPath()}/CameraPreset/{groupName}/{cutName}";
+                    var dirInfo = new DirectoryInfo(dirPath);
+                    var files = dirInfo.GetFiles("*.asset", SearchOption.AllDirectories);
+                    foreach (var file in files)
+                    {
+                        var path = file.FullName;
+                        path = path.Replace("\\", "/");
+                        path = path.Split("/Assets/")[1];
+                        pathList.Add($"Assets/{path}");
+                    }
+                }
             }
+
             return pathList;
         }
 
-        public static List<CameraPresetData> GetPresetDataList()
+        public static List<CameraPresetData> GetPresetDataList(string searchGroupName, string searchCutName)
         {
-            var pathList = GetPresetPathList();
+            var pathList = GetPresetPathList(searchGroupName, searchCutName);
             var dataList = new List<CameraPresetData>();
             foreach (var path in pathList)
             {
@@ -59,15 +72,44 @@ namespace tamagotori.lib.CameraUsherTool
             return AssetDatabase.LoadAssetAtPath<ProjectSettingsData>(path);
         }
 
+        static List<string> GetFolderChildNameList(string path)
+        {
+            var list = new List<string>();
+            var dirInfo = new DirectoryInfo(path);
+            foreach (var dir in dirInfo.GetDirectories())
+            {
+                list.Add(dir.Name);
+            }
+            return list;
+        }
+
         public static List<string> GetGroupNameList(bool withAll)
         {
             var list = new List<string>() { };
-            if (withAll) list.Add("All");
-            var projectSettings = GetProjectSettingsData();
-            foreach (var name in projectSettings.groupNameList)
+            if (withAll) list.Add(allGroupName);
+            var groupNameList = GetFolderChildNameList($"{GetToolRootPath()}/CameraPreset");
+            foreach (var name in groupNameList)
             {
                 list.Add(name);
             }
+            return list;
+        }
+
+        public static List<string> GetCutNameList(string groupName, bool withAll)
+        {
+            var list = new List<string>() { };
+            if (withAll) list.Add(allGroupName);
+            var groupNameList = GetFolderChildNameList($"{GetToolRootPath()}/CameraPreset");
+            foreach (var name in groupNameList)
+            {
+                if (groupName != name && groupName != allGroupName) continue;
+                var cutNameList = GetFolderChildNameList($"{GetToolRootPath()}/CameraPreset/{name}");
+                foreach (var cutName in cutNameList)
+                {
+                    list.Add(cutName);
+                }
+            }
+
             return list;
         }
     }

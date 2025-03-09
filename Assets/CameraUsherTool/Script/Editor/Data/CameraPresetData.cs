@@ -9,11 +9,8 @@ namespace tamagotori.lib.CameraUsherTool
         [Multiline(3)]
         [LabelText("メモ欄")]
         public string description;
-        [LabelText("グループ名")]
-        [ValueDropdown(nameof(GetGroupNameList))]
-        public string groupName;
-        [LabelText("プリセット名")]
-        public string presetName;
+        [LabelText("識別名")]
+        public string id;
         [LabelText("指定想定パーツ名")]
         public string expectedPartName;
 

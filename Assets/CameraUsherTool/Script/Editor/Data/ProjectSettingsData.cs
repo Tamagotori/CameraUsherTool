@@ -6,10 +6,6 @@ namespace tamagotori.lib.CameraUsherTool
 {
     public class ProjectSettingsData : ScriptableObject
     {
-        [FoldoutGroup("全体設定", order: 10)]
-        [LabelText("グループ名リスト")]
-        public List<string> groupNameList = new List<string>();
-
         [FoldoutGroup("ターゲット設定", order: 20)]
         [LabelText("レイヤー名")]
         public string targetLayer;

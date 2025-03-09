@@ -12,26 +12,47 @@ namespace tamagotori.lib.CameraUsherTool
 
     public class UIParts
     {
+
         [System.Serializable]
-        public class SearchPresetData
+        public class PresetGroupData
         {
-            [LabelText("プリセットデータ")]
-            public CameraPresetData currentPresetData;
+
             [BoxGroup("プリセット検索")]
             [ValueDropdown(nameof(GetGroupNameList))]
+            [LabelText("グループ名")]
             public string searchGroupName;
             [BoxGroup("プリセット検索")]
-            public string searchPresetWord;
-            [BoxGroup("プリセット検索")]
-            [Button("検索")]
-            void Search()
-            {
-
-            }
+            [LabelText("カット名")]
+            [ValueDropdown(nameof(GetCutNameList))]
+            public string searchPresetName;
 
             List<string> GetGroupNameList()
             {
                 return CameraUsherToolUtil.GetGroupNameList(true);
+            }
+
+            List<string> GetCutNameList()
+            {
+                return CameraUsherToolUtil.GetCutNameList(searchGroupName, true);
+            }
+
+        }
+
+        [System.Serializable]
+        public class SearchPresetData
+        {
+            [LabelText("")]
+            [InlineProperty]
+            public PresetGroupData presetGroupData;
+
+            [LabelText("プリセットデータ")]
+            //[ValueDropdown(nameof(GetPresetDataList))]
+            [InlineProperty]
+            public CameraPresetData currentPresetData;
+
+            List<CameraPresetData> GetPresetDataList()
+            {
+                return CameraUsherToolUtil.GetPresetDataList(presetGroupData.searchGroupName, presetGroupData.searchPresetName);
             }
         }
     }

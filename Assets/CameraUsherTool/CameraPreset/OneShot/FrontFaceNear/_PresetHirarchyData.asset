@@ -9,10 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7336b03314ba7634f8b7891ccfe44235, type: 3}
-  m_Name: CameraPresetData
+  m_Script: {fileID: 11500000, guid: 6a3d2a2a60833a24899d3ca973cb0778, type: 3}
+  m_Name: _PresetHirarchyData
   m_EditorClassIdentifier: 
-  description: 
-  groupName: "\u4E00\u4EBA"
-  presetName: 
-  expectedPartName: 
+  displayName: "\u6B63\u9762_\u9854_\u8FD1"
