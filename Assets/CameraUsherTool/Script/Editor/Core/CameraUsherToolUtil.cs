@@ -63,7 +63,7 @@ namespace tamagotori.lib.CameraUsherTool
             {
                 var data = AssetDatabase.LoadAssetAtPath<T>(path);
                 if (data == null) continue;
-                dataList.Add(GetPresetDataItem(path, data, nameType));
+                dataList.Add(GetPresetDataItem(dataList, path, data, nameType));
             }
             return dataList;
         }
@@ -86,7 +86,7 @@ namespace tamagotori.lib.CameraUsherTool
             return dataList;
         }
 
-        static ValueDropdownItem<T> GetPresetDataItem<T>(string path, T data, NameType nameType) where T : PresetDataBase
+        static ValueDropdownItem<T> GetPresetDataItem<T>(ValueDropdownList<T> list, string path, T data, NameType nameType) where T : PresetDataBase
         {
             var item = new ValueDropdownItem<T>("!!Error!!", data);
             if (nameType == NameType.FileName)
@@ -97,6 +97,14 @@ namespace tamagotori.lib.CameraUsherTool
             else if (nameType == NameType.DisplayName)
             {
                 item.Text = data.displayName;
+            }
+            foreach (var listItem in list)
+            {
+                if (listItem.Text == item.Text)
+                {
+                    item.Text = $"{item.Text}*";
+                    break;
+                }
             }
             return item;
         }
