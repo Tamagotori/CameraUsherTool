@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7336b03314ba7634f8b7891ccfe44235, type: 3}
-  m_Name: CameraPresetData
+  m_Name: CameraPresetData 1
   m_EditorClassIdentifier: 
-  displayName: hoge2
+  displayName: piyo2
   description: 
   expectedPartName: 

@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
+using System;
 
 namespace tamagotori.lib.CameraUsherTool
 {
@@ -26,16 +27,15 @@ namespace tamagotori.lib.CameraUsherTool
             [ValueDropdown(nameof(GetCutNameList))]
             public string searchPresetName;
 
-            List<string> GetGroupNameList()
+            ValueDropdownList<string> GetGroupNameList()
             {
-                return CameraUsherToolUtil.GetGroupNameList(true);
+                return CameraUsherToolUtil.GetGroupNameItemList(true);
             }
 
-            List<string> GetCutNameList()
+            ValueDropdownList<string> GetCutNameList()
             {
-                return CameraUsherToolUtil.GetCutNameList(searchGroupName, true);
+                return CameraUsherToolUtil.GetCutNameItemList(searchGroupName, true);
             }
-
         }
 
         [System.Serializable]
@@ -46,14 +46,31 @@ namespace tamagotori.lib.CameraUsherTool
             public PresetGroupData presetGroupData;
 
             [LabelText("プリセットデータ")]
-            //[ValueDropdown(nameof(GetPresetDataList))]
-            [InlineProperty]
-            public CameraPresetData currentPresetData;
-
-            List<CameraPresetData> GetPresetDataList()
+            [ValueDropdown(nameof(GetPresetDataList))]
+            [OnValueChanged(nameof(OnValidateSelectPresetData))]
+            public CameraPresetData selectPresetData;
+            ValueDropdownList<CameraPresetData> GetPresetDataList()
             {
-                return CameraUsherToolUtil.GetPresetDataList(presetGroupData.searchGroupName, presetGroupData.searchPresetName);
+                return CameraUsherToolUtil.LoadDataItemList<CameraPresetData>(
+                    presetGroupData.searchGroupName,
+                    presetGroupData.searchPresetName,
+                    CameraUsherToolUtil.NameType.FileName
+                );
             }
+
+            void OnValidateSelectPresetData()
+            {
+                if (selectPresetData == null)
+                {
+                    return;
+                }
+                currentPresetData = selectPresetData;
+            }
+
+            [ShowInInspector]
+            [InlineEditor(InlineEditorObjectFieldModes.CompletelyHidden)]
+            CameraPresetData currentPresetData;
+
         }
     }
 

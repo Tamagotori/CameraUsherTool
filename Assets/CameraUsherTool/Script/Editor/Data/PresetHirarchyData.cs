@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace tamagotori.lib.CameraUsherTool
 {
-    public class PresetHirarchyData : ScriptableObject
+    public class PresetHirarchyData : PresetDataBase
     {
-        public string displayName;
+
     }
 }
