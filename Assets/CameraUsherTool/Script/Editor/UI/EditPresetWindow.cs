@@ -34,7 +34,7 @@ namespace tamagotori.lib.CameraUsherTool
         [TitleGroup("プリセット編集", order: 20)]
         [LabelText("")]
         [InlineProperty]
-        public UIParts.SearchPresetData searchPresetData;
+        public UIParts.UIElementSearchPreset searchPresetData;
 
         void Awake()
         {
@@ -44,6 +44,11 @@ namespace tamagotori.lib.CameraUsherTool
         {
             CameraUsherToolUtil.searchPathPivot = this;
         }
+
+        [TitleGroup("カット編集", order: 30)]
+        [LabelText("")]
+        [InlineProperty]
+        public UIParts.UIElementCutEditor cutEditor;
     }
 }
 

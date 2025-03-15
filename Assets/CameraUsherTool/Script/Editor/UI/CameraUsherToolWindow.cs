@@ -26,7 +26,7 @@ namespace tamagotori.lib.CameraUsherTool
         [TitleGroup("プリセット", order: 20)]
         [LabelText("")]
         [InlineProperty]
-        public UIParts.SearchPresetData searchPresetData;
+        public UIParts.UIElementSearchPreset searchPresetData;
 
         [TitleGroup("ターゲット", order: 30)]
         [LabelText("ターゲット名")]

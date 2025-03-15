@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: hoge2
   description: 
-  expectedPartName: 
+  expectedPartName: "\u9854"

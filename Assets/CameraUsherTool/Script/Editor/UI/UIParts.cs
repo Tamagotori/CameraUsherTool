@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using System;
+using System.Linq;
+using UnityEditor;
 
 namespace tamagotori.lib.CameraUsherTool
 {
@@ -15,7 +17,7 @@ namespace tamagotori.lib.CameraUsherTool
     {
 
         [System.Serializable]
-        public class PresetGroupData
+        public class UIElementPresetGroup
         {
 
             [BoxGroup("プリセット検索")]
@@ -39,11 +41,11 @@ namespace tamagotori.lib.CameraUsherTool
         }
 
         [System.Serializable]
-        public class SearchPresetData
+        public class UIElementSearchPreset
         {
             [LabelText("")]
             [InlineProperty]
-            public PresetGroupData presetGroupData;
+            public UIElementPresetGroup presetGroupData;
 
             [LabelText("プリセットデータ")]
             [ValueDropdown(nameof(GetPresetDataList))]
@@ -54,7 +56,7 @@ namespace tamagotori.lib.CameraUsherTool
                 return CameraUsherToolUtil.LoadDataItemList<CameraPresetData>(
                     presetGroupData.searchGroupName,
                     presetGroupData.searchPresetName,
-                    CameraUsherToolUtil.NameType.FileName
+                    CameraUsherToolUtil.NameType.FileAndDisplayName
                 );
             }
 
@@ -65,12 +67,40 @@ namespace tamagotori.lib.CameraUsherTool
                     return;
                 }
                 currentPresetData = selectPresetData;
+                CurrentPresetData = selectPresetData;
             }
 
             [ShowInInspector]
             [InlineEditor(InlineEditorObjectFieldModes.CompletelyHidden)]
             CameraPresetData currentPresetData;
+            public static CameraPresetData CurrentPresetData;
+        }
 
+        [System.Serializable]
+        public class UIElementCutEditor
+        {
+            [OnValueChanged(nameof(OnValueChangeTargetList), includeChildren: true)]
+            [ValueDropdown(nameof(GetTargetList))]
+            public List<GameObject> targetList = new List<GameObject>();
+
+            List<GameObject> GetTargetList()
+            {
+                return CameraUsherToolUtil.GetTargetList();
+            }
+            public void OnValueChangeTargetList()
+            {
+                var isRemove = false;
+                var max = 1;
+                while (targetList.Count > max)
+                {
+                    targetList.Remove(targetList.Last());
+                    isRemove = true;
+                }
+                if (isRemove)
+                {
+                    EditorUtility.DisplayDialog("確認", $"ターゲット指定できる数は{max}までです。", "OK");
+                }
+            }
         }
     }
 

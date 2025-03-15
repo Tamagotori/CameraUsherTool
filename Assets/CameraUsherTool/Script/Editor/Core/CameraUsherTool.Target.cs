@@ -82,7 +82,7 @@ namespace tamagotori.lib.CameraUsherTool
 
         static ValueDropdownList<GameObject> GetTargetPartsChildren(ValueDropdownList<GameObject> list, ProjectSettingsData.TargetPartsData targetParts, Transform child)
         {
-            foreach (var targetName in targetParts.targetNameList)
+            foreach (var targetName in targetParts.searchConditionList)
             {
                 var targetNameRegex = new Regex(targetName);
                 if (targetNameRegex.IsMatch(child.gameObject.name))

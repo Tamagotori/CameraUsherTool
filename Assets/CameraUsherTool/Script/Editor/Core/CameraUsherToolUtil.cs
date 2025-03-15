@@ -3,10 +3,12 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 using Sirenix.OdinInspector;
+using System.Text.RegularExpressions;
+using UnityEngine.SceneManagement;
 
 namespace tamagotori.lib.CameraUsherTool
 {
-    public class CameraUsherToolUtil
+    public static class CameraUsherToolUtil
     {
         public static ScriptableObject searchPathPivot;
         public const string toolName = "CameraUsherTool";
@@ -92,11 +94,16 @@ namespace tamagotori.lib.CameraUsherTool
             if (nameType == NameType.FileName)
             {
                 var fileInfo = new FileInfo(path);
-                item.Text = fileInfo.Name;
+                item.Text = fileInfo.Name.Split('.')[0];
             }
             else if (nameType == NameType.DisplayName)
             {
                 item.Text = data.displayName;
+            }
+            else if (nameType == NameType.FileAndDisplayName)
+            {
+                var fileInfo = new FileInfo(path);
+                item.Text = $"{fileInfo.Name.Split('.')[0]} : {data.displayName}";
             }
             foreach (var listItem in list)
             {
@@ -149,10 +156,55 @@ namespace tamagotori.lib.CameraUsherTool
             return list;
         }
 
+        public static List<ProjectSettingsData.TargetPartsData> GetTargetPartsDataList()
+        {
+            var list = new List<ProjectSettingsData.TargetPartsData>();
+            var projectSettingsData = GetProjectSettingsData();
+            foreach (var targetPartsData in projectSettingsData.targetPartsList)
+            {
+                list.Add(targetPartsData);
+            }
+            return list;
+        }
+
+        public static List<GameObject> GetTargetList()
+        {
+            var list = new List<GameObject>();
+            var projectData = GetProjectSettingsData();
+            foreach (var targetName in projectData.targetNameList)
+            {
+                int sceneCount = SceneManager.sceneCount;
+                for (var i = 0; i < sceneCount; i++)
+                {
+                    list.AddRange(GetTargetListInScene(targetName, SceneManager.GetSceneAt(i)));
+                }
+            }
+            return list;
+        }
+
+        static List<GameObject> GetTargetListInScene(string targetName, Scene scene)
+        {
+            var list = new List<GameObject>();
+            var rootObjects = scene.GetRootGameObjects();
+            foreach (var rootObject in rootObjects)
+            {
+                var transList = rootObject.GetComponentsInChildren<Transform>(true);
+                foreach (var trans in transList)
+                {
+                    if (Regex.IsMatch(trans.gameObject.name, targetName))
+                    {
+                        list.Add(trans.gameObject);
+                    }
+                }
+            }
+            return list;
+        }
+
         public enum NameType
         {
             FileName,
-            DisplayName
+            DisplayName,
+            FileAndDisplayName
         }
     }
 }
